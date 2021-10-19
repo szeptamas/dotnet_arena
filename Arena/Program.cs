@@ -8,8 +8,8 @@ namespace Arena
         {
 
             // jöjjön létre 2 harcos
-            Fighter warrior1 = new Fighter("Roland", 100, 10, 5);
-            Fighter warrior2 = new Fighter("Bálint", 100, 10, 5);
+            Fighter warrior1 = new Fighter("Roland", 100, 30, 15);
+            Fighter warrior2 = new Fighter("Bálint", 100, 30, 15);
 
             // írjuk ki a harcosok tulajdonságait
             Console.WriteLine($"1. harcos: {warrior1.Name}");
@@ -67,31 +67,4 @@ namespace Arena
         }
     }
 
-    public class Fighter
-    {
-        private static Random random = new Random();
-
-        public string Name { get; set; }
-        public int Health { get; set; }
-        public int AttackMax { get; set; }
-        public int BlockMax { get; set; }
-
-        public Fighter(string name, int health, int attackMax, int blockMax)
-        {
-            Name = name;
-            Health = health;
-            AttackMax = attackMax;
-            BlockMax = blockMax;
-        }
-
-        public int Attack()
-        {
-            return random.Next(0, AttackMax + 1);
-        }
-
-        public int Block()
-        {
-            return random.Next(0, BlockMax + 1);
-        }
-    }
 }
