@@ -8,8 +8,8 @@ namespace Arena
         {
 
             // jöjjön létre 2 harcos
-            Fighter warrior1 = new Fighter("Roland", 100, 20, 5);
-            Fighter warrior2 = new Fighter("Bálint", 100, 22, 3);
+            Fighter warrior1 = new Fighter("Roland", 100, 10, 5);
+            Fighter warrior2 = new Fighter("Bálint", 100, 10, 5);
 
             // írjuk ki a harcosok tulajdonságait
             Console.WriteLine($"1. harcos: {warrior1.Name}");
@@ -24,28 +24,36 @@ namespace Arena
 
                 damage = warrior1.Attack();
                 block = warrior2.Block();
+                if (block > damage)
+                {
+                    block = damage;
+                }
                 warrior2.Health -= damage - block;
 
                 Console.WriteLine($"{warrior1.Name} támad. Sebzés: {damage}.");
                 Console.WriteLine($"{warrior2.Name} véd. Blokk: {block}.");
-                Console.WriteLine($"{warrior2.Name} élete: {warrior2.Health - damage + block}");
+                Console.WriteLine($"{warrior2.Name} élete: {warrior2.Health}");
                 Console.WriteLine();
 
-                if (warrior2.Health - damage + block <= 0)
+                if (warrior2.Health <= 0)
                 {
                     break;
                 }
 
                 damage = warrior2.Attack();
                 block = warrior1.Block();
+                if (block > damage)
+                {
+                    block = damage;
+                }
                 warrior1.Health -= damage - block;
 
                 Console.WriteLine($"{warrior2.Name} támad. Sebzés: {damage}.");
                 Console.WriteLine($"{warrior1.Name} véd. Blokk: {block}.");
-                Console.WriteLine($"{warrior1.Name} élete: {warrior1.Health - damage + block}");
+                Console.WriteLine($"{warrior1.Name} élete: {warrior1.Health}");
                 Console.WriteLine();
 
-                if (warrior1.Health - damage + block <= 0)
+                if (warrior1.Health <= 0)
                 {
                     break;
                 }
@@ -53,6 +61,8 @@ namespace Arena
 
             // írjuk ki hogy ki nyert
             Console.WriteLine("Játék vége");
+            string nyertes = warrior1.Health > warrior2.Health ? warrior1.Name : warrior2.Name;
+            Console.WriteLine($"A nyertes: {nyertes}");
 
         }
     }
@@ -76,12 +86,12 @@ namespace Arena
 
         public int Attack()
         {
-            return random.Next(AttackMax + 1);
+            return random.Next(0, AttackMax + 1);
         }
 
         public int Block()
         {
-            return random.Next(BlockMax + 1);
+            return random.Next(0, BlockMax + 1);
         }
     }
 }
