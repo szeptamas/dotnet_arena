@@ -1,10 +1,11 @@
 ﻿using System;
+using Arena.Interfaces;
 
-namespace Arena
+namespace Arena.Model
 {
-    public class Fighter
+    public class Fighter : IFighter
     {
-        private static Random random = new Random();
+        private static readonly Random Rnd = new Random();
 
         public Fighter(string name, int health, int attackMax, int blockMax)
         {
@@ -21,12 +22,12 @@ namespace Arena
 
         public int Attack()
         {
-            return random.Next(0, AttackMax + 1);
+            return Rnd.Next(0, AttackMax + 1);
         }
 
         public int Block()
         {
-            return random.Next(0, BlockMax + 1);
+            return Rnd.Next(0, BlockMax + 1);
         }
     }
 }

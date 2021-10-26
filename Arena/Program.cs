@@ -1,4 +1,5 @@
 ﻿using System;
+using Arena.Model;
 
 namespace Arena
 {
@@ -7,61 +8,63 @@ namespace Arena
         static void Main(string[] args)
         {
 
-            // jöjjön létre 2 harcos
             Fighter warrior1 = new Fighter("Roland", 100, 30, 15);
-            Fighter warrior2 = new Fighter("Bálint", 100, 30, 15);
+            Creature creature1 = new Creature("Bálint", 100, 30, 15, 1);
 
-            // írjuk ki a harcosok tulajdonságait
+            //TODO 1 öngyógyítást megvalósítani
+
+            //TODO 2 refaktorálni a harcot
+
             Console.WriteLine($"1. harcos: {warrior1.Name}");
-            Console.WriteLine($"2. harcos: {warrior2.Name}");
+            Console.WriteLine($"2. harcos: {creature1.Name}");
 
-
-            // harcoljanak halálig
-            while (true)
+            bool isGameOver = false;
+            do
             {
                 int damage;
                 int block;
 
                 damage = warrior1.Attack();
-                block = warrior2.Block();
+                block = creature1.Block();
                 if (block > damage)
                 {
                     block = damage;
                 }
-                warrior2.Health -= damage - block;
+
+                creature1.Health -= damage - block;
 
                 Console.WriteLine($"{warrior1.Name} támad. Sebzés: {damage}.");
-                Console.WriteLine($"{warrior2.Name} véd. Blokk: {block}.");
-                Console.WriteLine($"{warrior2.Name} élete: {warrior2.Health}");
+                Console.WriteLine($"{creature1.Name} véd. Blokk: {block}.");
+                Console.WriteLine($"{creature1.Name} élete: {creature1.Health}");
                 Console.WriteLine();
 
-                if (warrior2.Health <= 0)
+                if (creature1.Health <= 0)
                 {
-                    break;
+                    isGameOver = true;
                 }
 
-                damage = warrior2.Attack();
+                damage = creature1.Attack();
                 block = warrior1.Block();
                 if (block > damage)
                 {
                     block = damage;
                 }
+
                 warrior1.Health -= damage - block;
 
-                Console.WriteLine($"{warrior2.Name} támad. Sebzés: {damage}.");
+                Console.WriteLine($"{creature1.Name} támad. Sebzés: {damage}.");
                 Console.WriteLine($"{warrior1.Name} véd. Blokk: {block}.");
                 Console.WriteLine($"{warrior1.Name} élete: {warrior1.Health}");
                 Console.WriteLine();
 
                 if (warrior1.Health <= 0)
                 {
-                    break;
+                    isGameOver = true;
                 }
-            }
+            } while (!isGameOver);
 
-            // írjuk ki hogy ki nyert
             Console.WriteLine("Játék vége");
-            string nyertes = warrior1.Health > warrior2.Health ? warrior1.Name : warrior2.Name;
+            string nyertes = warrior1.Health > creature1.Health ? warrior1.Name : creature1.Name;
             Console.WriteLine($"A nyertes: {nyertes}");
 
         }
