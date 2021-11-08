@@ -6,16 +6,19 @@ namespace Arena.Model
     {
         private static readonly Random Rnd = new Random();
 
-        public int HealSelfMaxMax { get; set; }
+        public int HealSelfMax { get; set; }
 
         public Creature(string name, int health, int attackMax, int blockMax, int healSelfMax) : base(name, health, attackMax, blockMax)
         {
-            HealSelfMaxMax = healSelfMax;
+            Species = "Lény";
+            HealSelfMax = healSelfMax;
         }
 
         public int HealSelf()
         {
-            return Rnd.Next(0, 1);
+            int heal = Rnd.Next(0, HealSelfMax + 1);
+            Health = Health + heal > HealthMax ? HealthMax : Health + heal;
+            return heal;
         }
     }
 }

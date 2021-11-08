@@ -4,6 +4,8 @@
     {
         int Attack();
 
-        int Block();
+        int Block(int damage);
+
+        bool IsDead();
     }
 }

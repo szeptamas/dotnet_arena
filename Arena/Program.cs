@@ -1,84 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using Arena.Interfaces;
+﻿using System.Collections.Generic;
 using Arena.Model;
+using Arena.UI;
 
 namespace Arena
 {
-    class Program
+    internal class Program
     {
-        static List<Fighter> fighters = new List<Fighter>();
-        static int actualFighter = 0;
+        private static readonly List<Fighter> Fighters = new List<Fighter>();
+        private static int _actualAttackerPos = 0;
+        private static int _actualDefenderPos = 1;
+        private static Fighter _actualAttacker;
+        private static Fighter _actualDefender;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             InitFighters();
-            ShowFighters();
-
-            //TODO öngyógyítást megvalósítani
-
-            bool isGameOver = false;
-            Fighter actualAttacker;
-            Fighter actualDefender;
-
-            // A játékmenet főciklusa.
-            do
-            {
-                actualAttacker = fighters[getNextFighter(actualFighter, 0)];
-                actualDefender = fighters[getNextFighter(actualFighter, 1)];
-
-                var damage = actualAttacker.Attack();
-                var block = actualDefender.Block();
-
-                if (block > damage)
-                {
-                    block = damage;
-                }
-
-                actualDefender.Health -= damage - block;
-
-                //ShowActionResult()
-                Console.WriteLine($"{actualAttacker.Name} támad. Sebzés: {damage}.");
-                Console.WriteLine($"{actualDefender.Name} véd. Blokk: {block}.");
-                Console.WriteLine($"{actualDefender.Name} élete: {actualDefender.Health}");
-                Console.WriteLine();
-
-                if (actualDefender.Health <= 0)
-                {
-                    isGameOver = true;
-                }
-            } while (!isGameOver);
-
-            Console.WriteLine("Játék vége");
-            Console.WriteLine($"A nyertes: {actualAttacker.Name}");
-
+            FightUI.ShowFighters(Fighters);
+            DoFight();
+            FightUI.ShowEnd(_actualAttacker);
         }
 
-        private static void ShowFighters()
-        {
-            foreach (var fighter in fighters)
-            {
-                Console.WriteLine($"Harcos: {fighter.Name}, Támadás: {fighter.AttackMax}, Védés: {fighter.BlockMax}");
-            }
-        }
+        #region Fight related methods
 
         private static void InitFighters()
         {
-            fighters.Add(new Fighter("Roland", 100, 30, 15));
-            fighters.Add(new Creature("Bálint", 100, 30, 15, 1));
+            Fighters.Add(new Fighter("Roland", 60, 25, 15));
+            Fighters.Add(new Creature("Bálint", 50, 30, 10, 3));
         }
 
-        private static int getNextFighter(int actFighter, int step)
+        // A játékmenet főciklusa.
+        private static void DoFight()
         {
-            actFighter = actualFighter + step;
-            if (actFighter >= fighters.Count)
-            {
-                actFighter = 0;
-            }
+            bool isGameOver = false;
 
-            actualFighter = actFighter;
-            return actFighter;
+            do
+            {
+                _actualAttacker = Fighters[GetNextFighter(ref _actualAttackerPos)];
+                _actualDefender = Fighters[GetNextFighter(ref _actualDefenderPos)];
+
+                DoSelfHeals();
+
+                var damage = _actualAttacker.Attack();
+                var block = _actualDefender.Block(damage);
+
+                _actualDefender.Health -= damage - block;
+
+                FightUI.ShowFightResults(_actualAttacker, _actualDefender, damage, block);
+                FightUI.ShowStatus(Fighters);
+
+                isGameOver = _actualDefender.IsDead();
+            } while (!isGameOver);
         }
+
+        private static void DoSelfHeals()
+        {
+            foreach (var fighter in Fighters)
+            {
+                if (fighter is not Creature creature) continue;
+                if (fighter.Health >= fighter.HealthMax) continue;
+                int heal = creature.HealSelf();
+                if (heal <= 0) continue;
+
+                FightUI.ShowHeal(fighter, heal);
+            }
+        }
+
+        private static int GetNextFighter(ref int fighter)
+        {
+            if (++fighter >= Fighters.Count)
+            {
+                fighter = 0;
+            }
+            return fighter;
+        }
+        #endregion
+
     }
 
 }
