@@ -11,6 +11,7 @@ namespace Arena
         private static int _actualDefenderPos = 1;
         private static Fighter _actualAttacker;
         private static Fighter _actualDefender;
+        private static int _round = 0;
 
         private static void Main(string[] args)
         {
@@ -24,6 +25,7 @@ namespace Arena
 
         private static void InitFighters()
         {
+            //TRY: kommentezd ki ezeket, hogy ne legyenek harcosok
             Fighters.Add(new Fighter("Roland", 60, 25, 15));
             Fighters.Add(new Creature("Bálint", 50, 30, 10, 3));
         }
@@ -31,10 +33,15 @@ namespace Arena
         // A játékmenet főciklusa.
         private static void DoFight()
         {
+            if (Fighters.Count <= 0) return;
+
             bool isGameOver = false;
 
             do
             {
+                ++_round;
+                FightUI.ShowRound(_round);
+
                 _actualAttacker = Fighters[GetNextFighter(ref _actualAttackerPos)];
                 _actualDefender = Fighters[GetNextFighter(ref _actualDefenderPos)];
 
@@ -50,6 +57,7 @@ namespace Arena
 
                 isGameOver = _actualDefender.IsDead();
             } while (!isGameOver);
+
         }
 
         private static void DoSelfHeals()

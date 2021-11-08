@@ -22,6 +22,11 @@ namespace Arena.UI
             Console.WriteLine();
         }
 
+        public static void ShowRound(int round)
+        {
+            UIHelper.ColorWriteLine($"{round}. kör");
+        }
+
         public static void ShowFightResults(Fighter actualAttacker, Fighter actualDefender, int damage, int block)
         {
             UIHelper.ColorWriteLine($"{actualAttacker.Name} támadja: {actualDefender.Name}. Sebzés: ~1{damage}~0");
@@ -36,7 +41,12 @@ namespace Arena.UI
 
         public static void ShowEnd(Fighter fighter)
         {
-            UIHelper.ColorWriteLine($"Játék vége! A nyertes: ~2{fighter.Name}~0");
+            UIHelper.ColorWrite("~3Játék vége! ~0");
+            if (fighter != null)
+            {
+                UIHelper.ColorWrite($"A nyertes: ~2{fighter.Name}~0");
+            }
+            Console.WriteLine();
         }
 
         public static void ShowStatus(List<Fighter> fighters)
@@ -47,6 +57,7 @@ namespace Arena.UI
             }
             Console.WriteLine();
             UIHelper.ColorWriteLine("========================");
+            Console.WriteLine();
         }
 
     }
