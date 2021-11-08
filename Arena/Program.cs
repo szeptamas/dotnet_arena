@@ -25,9 +25,12 @@ namespace Arena
 
         private static void InitFighters()
         {
-            //TRY: kommentezd ki ezeket, hogy ne legyenek harcosok
+            //TRY: kommentezd ki ezeket, hogy ne legyenek harcosok egyáltalán
             Fighters.Add(new Fighter("Roland", 60, 25, 15));
             Fighters.Add(new Creature("Bálint", 50, 30, 10, 3));
+
+            //TRY uncomment ezt, és továbbfejleszteni a játék vége vizsgálatot
+            //Fighters.Add(new Creature("Tamás", 30, 10, 10, 5));
         }
 
         // A játékmenet főciklusa.

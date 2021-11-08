@@ -29,7 +29,7 @@ namespace Arena.UI
 
         public static void ShowFightResults(Fighter actualAttacker, Fighter actualDefender, int damage, int block)
         {
-            UIHelper.ColorWriteLine($"{actualAttacker.Name} támadja: {actualDefender.Name}. Sebzés: ~1{damage}~0");
+            UIHelper.ColorWriteLine($"{actualAttacker.Name} --> {actualDefender.Name}. Sebzés: ~1{damage}~0");
             UIHelper.ColorWriteLine($"{actualDefender.Name} blokkol: ~2{block}~0, élete: ~3{actualDefender.Health}~0");
             UIHelper.ColorWriteLine("--------------------------");
         }
