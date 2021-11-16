@@ -13,7 +13,7 @@ namespace Arena.UI
             UIHelper.ColorWriteLine("~0-= ~1ULTIMATE ~2ARENA ~3FIGHT ~0=-");
             UIHelper.ColorWriteLine("--------------------------");
 
-            foreach (var fighter in fighters.Select((value, i) => new { i, value }))
+            foreach (var fighter in fighters. Select((value, i) => new { i, value }))
             {
                 UIHelper.ColorWriteLine($"{fighter.i + 1}. {fighter.value.Name}: {fighter.value.Species} | Tám.: ~1{fighter.value.AttackMax}~0 | Véd.: ~2{fighter.value.BlockMax}~0 | Erő: ~3{fighter.value.Health}~0");
             }
@@ -31,12 +31,19 @@ namespace Arena.UI
         {
             UIHelper.ColorWriteLine($"{actualAttacker.Name} --> {actualDefender.Name}. Sebzés: ~1{damage}~0");
             UIHelper.ColorWriteLine($"{actualDefender.Name} blokkol: ~2{block}~0, élete: ~3{actualDefender.Health}~0");
+            if (actualDefender.IsDead())
+            {
+                UIHelper.ColorWriteLine($"~1{actualDefender.Name} meghalt.");
+            }
             UIHelper.ColorWriteLine("--------------------------");
         }
 
         public static void ShowHeal(Fighter fighter, int heal)
         {
-            UIHelper.ColorWriteLine($"{fighter.Name} gyógyít magán: ~2{heal}~0, élete: ~3{fighter.Health}~0");
+            if (fighter != null)
+            {
+                UIHelper.ColorWriteLine($"{fighter.Name} gyógyít magán: ~2{heal}~0, élete: ~3{fighter.Health}~0");
+            }
         }
 
         public static void ShowEnd(Fighter fighter)
@@ -53,7 +60,8 @@ namespace Arena.UI
         {
             foreach (var fighter in fighters)
             {
-                UIHelper.ColorWrite($"{fighter.Name}: ~3{fighter.Health}~0 | ");
+                int color = fighter.IsDead() ? 1 : 0;
+                UIHelper.ColorWrite($"~{color}{fighter.Name}: ~3{fighter.Health}~0 | ");
             }
             Console.WriteLine();
             UIHelper.ColorWriteLine("========================");

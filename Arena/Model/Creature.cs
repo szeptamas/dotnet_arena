@@ -6,7 +6,8 @@ namespace Arena.Model
     {
         public int HealSelfMax { get; set; }
 
-        public Creature(string name, int health, int attackMax, int blockMax, int healSelfMax) : base(name, health, attackMax, blockMax)
+        public Creature(string name, int health, int attackMax, int blockMax, int healSelfMax) : 
+            base(name, health, attackMax, blockMax)
         {
             Species = "Lény";
             HealSelfMax = healSelfMax;

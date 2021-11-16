@@ -9,6 +9,11 @@ namespace Arena.Model
 
         public Fighter(string name, int healthMax, int attackMax, int blockMax)
         {
+            if (attackMax < 1)
+            {
+                throw new ArgumentException("Attack value must be minimum 1.");
+            }
+
             Species = "Ember";
             Name = name;
             HealthMax = healthMax;
@@ -26,7 +31,7 @@ namespace Arena.Model
 
         public int Attack()
         {
-            return Rnd.Next(0, AttackMax + 1);
+            return Rnd.Next(1, AttackMax + 1);
         }
 
         public int Block(int damage)
